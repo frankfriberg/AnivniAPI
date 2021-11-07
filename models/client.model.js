@@ -17,9 +17,11 @@ const ClientSchema = new Schema({
   },
   questions: [
     {
-      type: String,
-      title: String,
-      label: String,
+      type: { type: String, required: true },
+      label: {
+        type: Map,
+        of: String,
+      },
       options: [String],
     },
   ],
