@@ -8,10 +8,11 @@ const GoogleRouter = Router()
 GoogleRouter.post('/', (req, res, next) => {
   add(req.body.spreadsheetId, req.body.table, req.body.data)
     .then((response) => {
-      res.success(
-        response.status,
-        `Added data to '${response.data.spreadsheetId}!${response.data.tableRange}'`
-      )
+      res
+        .status(response.status)
+        .json(
+          `Added data to '${response.data.spreadsheetId}!${response.data.tableRange}'`
+        )
     })
     .catch((err) => next(err))
 })
