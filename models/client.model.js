@@ -33,7 +33,15 @@ const ClientSchema = new Schema({
         type: String,
         required: [true, 'type is required'],
         enum: {
-          values: ['text', 'number', 'date', 'select'],
+          values: [
+            'text',
+            'radio',
+            'checkbox',
+            'number',
+            'date',
+            'select',
+            'boolean',
+          ],
           message: 'Type {VALUE} is not supported',
         },
       },
