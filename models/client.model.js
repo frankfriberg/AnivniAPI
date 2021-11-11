@@ -4,28 +4,38 @@ const { Schema } = mongoose
 const ClientSchema = new Schema({
   slug: {
     type: String,
-    lowecasea: true,
+    lowercase: true,
     unique: true,
+    required: [true, 'slug is required'],
   },
   name: {
     type: String,
-    required: true,
+    required: [true, 'name is required'],
   },
   email: {
     type: String,
-    required: true,
+    unique: true,
+    match: /.+\@.+\..+/,
+    required: [true, 'email is required'],
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'password is required'],
   },
   date: {
     type: Date,
-    required: true,
+    required: [true, 'date is required'],
   },
   questions: [
     {
-      type: { type: String, required: true },
+      type: {
+        type: String,
+        required: [true, 'type is required'],
+        enum: {
+          values: ['text', 'number', 'date', 'select'],
+          message: 'Type {VALUE} is not supported',
+        },
+      },
       label: {
         type: Map,
         of: String,
