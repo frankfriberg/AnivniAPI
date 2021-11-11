@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt'
+
 import { Client } from '../models'
 import { BadRequest, NotFound } from '../helpers/error'
 
@@ -5,11 +7,17 @@ const ClientNotFound = (slug) => `Client "${slug}" was not found`
 
 // Create
 export function createNew(data) {
-  return new Promise((resolve, reject) => {
-    Client.create(data, (err, created) => {
-      if (err) return reject(new BadRequest(err))
-      return resolve(created)
-    })
+  return new Promise(async (resolve, reject) => {
+    bcrypt
+      .hash(data.password, 12)
+      .then((hash) => {
+        data.password = hash
+        Client.create(data, (err, created) => {
+          if (err) return reject(new BadRequest(err))
+          return resolve(created)
+        })
+      })
+      .catch((err) => reject(new BadRequest(err)))
   })
 }
 
