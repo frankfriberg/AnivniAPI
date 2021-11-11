@@ -4,7 +4,6 @@ import mongoose from 'mongoose'
 import morgan from 'morgan'
 
 import ErrorHandler from './middleware/errors'
-import Success from './middleware/success'
 
 import routes from './routes'
 import DatabaseSeed from './seeds'
