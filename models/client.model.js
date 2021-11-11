@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 const { Schema } = mongoose
 
+// TODO: [AN-16] Add duplicate validation for slug and email + other fields
 const ClientSchema = new Schema({
   slug: {
     type: String,
