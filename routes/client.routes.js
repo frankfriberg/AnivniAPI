@@ -24,7 +24,7 @@ ClientRouter.get('/', (req, res, next) => {
 
 ClientRouter.get('/:slug', (req, res, next) => {
   findBySlug(req.params.slug)
-    .then((client) => res.status(200).(client))
+    .then((client) => res.status(200).json(client))
     .catch((err) => next(err))
 })
 
