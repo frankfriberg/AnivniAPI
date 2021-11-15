@@ -1,21 +1,24 @@
-import { Client, Guest } from '../models'
-import { createNew } from '../controllers/client.controller'
+import { User, Guest, Event } from '../models'
+import { createNew } from '../controllers/user.controller'
 
-import ClientSeed from './client.seed'
+import UserSeed from './user.seed'
+import AdminSeed from './admin.seed'
+import EventSeed from './event.seed'
 import GuestSeed from './guest.seed'
 
-export default function seedDatabase() {
-  return new Promise((resolve, reject) => {
-    Client.deleteMany({}, () => {
-      createNew(ClientSeed, (err, client) => {
-        if (err) return reject(console.error(err))
-        Guest.deleteMany({}, () => {
-          Guest.create(GuestSeed(client[0]._id), (err, guests) => {
-            if (err) return reject(console.error(err))
-            resolve()
-          })
-        })
-      })
-    })
-  })
+export default async function seedDatabase() {
+  await User.deleteMany({})
+  await Guest.deleteMany({})
+  await Event.deleteMany({})
+  await createNew(AdminSeed)
+
+  const newUser = await createNew(UserSeed)
+  const newEvent = await Event.create(EventSeed(newUser._id))
+  const newGuests = await Guest.create(GuestSeed(newEvent._id))
+
+  newUser.event = [newEvent._id]
+  newEvent.guests = newGuests.map((guest) => guest._id)
+
+  await newUser.save()
+  await newEvent.save()
 }

@@ -16,7 +16,7 @@ export default function seedGuests(id) {
 
   for (const guest of names) {
     guests.push({
-      client: id,
+      event: id,
       name: guest,
       attending: Math.random() < 0.7,
     })
