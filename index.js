@@ -1,17 +1,18 @@
 import express from 'express'
-import mongoose from 'mongoose'
-// import cors from 'cors'
+import cors from 'cors'
+import dotenv from 'dotenv'
 import morgan from 'morgan'
 
 import ErrorHandler from './middleware/errors'
+import connect from './config/database'
 
 import routes from './routes'
-import DatabaseSeed from './seeds'
 
+dotenv.config()
 const app = express()
 const port = process.env.PORT || 8000
 
-// app.use(cors())
+app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(morgan('dev'))
@@ -20,16 +21,8 @@ app.use('/api/v3', routes)
 
 app.use(ErrorHandler)
 
-const dbPath = 'mongodb://127.0.0.1:27017/aninvi'
-const options = { useNewUrlParser: true, useUnifiedTopology: true }
+connect()
 
-mongoose.connect(dbPath, options, async (err, res) => {
-  if (err) {
-    throw err
-  } else {
-    DatabaseSeed()
-    app.listen(port, () => {
-      console.log(`Server is running on http://localhost:${port}`)
-    })
-  }
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`)
 })

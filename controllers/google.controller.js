@@ -1,5 +1,5 @@
 import { google } from 'googleapis'
-import Client from './client.controller'
+import User from './user.controller'
 import Guest from './guest.controller'
 
 if (process.env.NODE_ENV !== 'production') {

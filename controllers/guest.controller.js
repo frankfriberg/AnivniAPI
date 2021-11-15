@@ -1,4 +1,4 @@
-import { Guest, Client } from '../models'
+import { Guest, User } from '../models'
 import { BadRequest, NotFound } from '../helpers/error'
 
 const GuestNotFound = (slug) => `Guest "${slug}" was not found`
@@ -25,15 +25,10 @@ export function listAll() {
 
 export function listAllBySlug(slug) {
   return new Promise((resolve, reject) => {
-    Client.findOne({ slug: slug }).exec((err, client) => {
+    Event.findOne({ slug: slug }).exec((err, event) => {
       if (err) return reject(new BadRequest(err))
-      if (!client) return reject(new NotFound(GuestNotFound(slug), slug))
-      Guest.find({ client: client._id }, (err, guests) => {
-        if (err) return reject(new BadRequest(err))
-        if (!client)
-          return reject(new NotFound(GuestNotFound(client._id), client._id))
-        return resolve(guests)
-      })
+      if (!event) return reject(new NotFound(`Event ${slug} not found.`, slug))
+      resolve(event.guests)
     })
   })
 }

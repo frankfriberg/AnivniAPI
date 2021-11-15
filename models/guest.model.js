@@ -2,9 +2,9 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const GuestSchema = new Schema({
-  client: {
+  event: {
     type: Schema.Types.ObjectId,
-    ref: 'Client',
+    ref: 'Event',
     required: true,
   },
   name: {

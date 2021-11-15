@@ -1,4 +1,5 @@
-import Client from './client.model'
+import User from './user.model'
+import Event from './event.model'
 import Guest from './guest.model'
 
-export { Client, Guest }
+export { User, Event, Guest }
