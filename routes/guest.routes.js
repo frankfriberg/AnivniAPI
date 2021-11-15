@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import auth from '../middleware/auth'
+import { auth, isAdmin } from '../middleware/auth'
 
 import {
   addNew,
@@ -19,19 +19,20 @@ GuestRouter.post('/', (req, res, next) => {
 })
 
 // Read
-GuestRouter.get('/', auth, (req, res, next) => {
+GuestRouter.get('/', [auth, isAdmin], (req, res, next) => {
   listAll()
     .then((guests) => res.status(200).json(guests))
     .catch((err) => next(err))
 })
+
 GuestRouter.get('/:slug', auth, (req, res, next) => {
-  listAllBySlug(req.params.slug)
+  listAllBySlug(req.params.slug, req.user.id)
     .then((guests) => res.status(200).json(guests))
     .catch((err) => next(err))
 })
 
 // Update
-GuestRouter.put('/:id', auth, (req, res, next) => {
+GuestRouter.put('/:id', (req, res, next) => {
   updateById(req.params.id, req.body)
     .then((guest) => res.status(200).json(guest))
     .catch((err) => next(err))

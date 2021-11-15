@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 const { TokenExpiredError } = jwt
 
-export default function auth(req, res, next) {
+export function auth(req, res, next) {
   const authHeader = req.headers['authorization']
 
   if (!authHeader)
@@ -13,7 +13,6 @@ export default function auth(req, res, next) {
   try {
     const token = authHeader.split(' ')[1]
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    console.log(decoded)
     req.user = decoded
   } catch (err) {
     if (err instanceof TokenExpiredError) {
@@ -24,5 +23,11 @@ export default function auth(req, res, next) {
 
     return res.status(401).json({ message: 'Unauthorized' })
   }
+  return next()
+}
+
+export function isAdmin(req, res, next) {
+  if (req.user.role !== 'admin')
+    return res.status(403).json({ message: 'Unauthorized' })
   return next()
 }

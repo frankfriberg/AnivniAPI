@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import auth from '../middleware/auth'
+import { auth, isAdmin } from '../middleware/auth'
 
 import {
   createNew,
@@ -19,7 +19,7 @@ UserRouter.post('/', (req, res, next) => {
 })
 
 // Read
-UserRouter.get('/', auth, (req, res, next) => {
+UserRouter.get('/', [auth, isAdmin], (req, res, next) => {
   findAll().then((users) => res.status(200).json(users))
 })
 

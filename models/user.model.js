@@ -14,13 +14,10 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'password is required'],
   },
-  admin: {
-    type: Boolean,
-    default: false,
-  },
-  organizer: {
-    type: Boolean,
-    default: false,
+  role: {
+    type: String,
+    enum: ['admin', 'organizer', 'user'],
+    default: 'user',
   },
   token: {
     type: String,

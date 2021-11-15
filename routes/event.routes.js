@@ -1,10 +1,10 @@
 import { Router } from 'express'
-
+import { auth } from '../middleware/auth'
 import { getEvent, addNew } from '../controllers/event.controller'
 
 const EventRouter = Router()
 
-EventRouter.get('/:slug', (req, res, next) => {
+EventRouter.get('/:slug', auth, (req, res, next) => {
   getEvent(req.params.slug)
     .then((event) => res.status(200).json(event))
     .catch((err) => next(err))

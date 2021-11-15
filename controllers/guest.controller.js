@@ -1,5 +1,5 @@
-import { Guest, User } from '../models'
-import { BadRequest, NotFound } from '../helpers/error'
+import { Guest, Event } from '../models'
+import { BadRequest, NotFound, Unauthorized } from '../helpers/error'
 
 const GuestNotFound = (slug) => `Guest "${slug}" was not found`
 
@@ -23,12 +23,18 @@ export function listAll() {
   })
 }
 
-export function listAllBySlug(slug) {
+export function listAllBySlug(slug, user) {
   return new Promise((resolve, reject) => {
     Event.findOne({ slug: slug }).exec((err, event) => {
       if (err) return reject(new BadRequest(err))
       if (!event) return reject(new NotFound(`Event ${slug} not found.`, slug))
-      resolve(event.guests)
+      if (user != event.user)
+        return reject(
+          new Unauthorized('You are not authorized to view this event.')
+        )
+      Guest.find({ event: event._id }, (err, guests) => {
+        resolve(guests)
+      })
     })
   })
 }
