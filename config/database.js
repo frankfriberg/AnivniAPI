@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import SeedDatabase from '../seeds'
+import { resetDatabase } from '../seeds'
 
 export default function connect() {
   mongoose
@@ -10,10 +10,9 @@ export default function connect() {
     })
     .then(() => {
       if (process.env.NODE_ENV === 'development') {
-        SeedDatabase()
-        console.log('Database seeded')
+        resetDatabase().then(() => console.log('Database seeded'))
       }
-      console.log('MongoDB Connected...')
+      // console.log('MongoDB Connected...')
     })
     .catch((err) => {
       console.error(err)
