@@ -1,10 +1,11 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { isValidObjectId } from 'mongoose'
 
 import { User } from '../models'
 import { BadRequest, NotFound } from '../helpers/error'
 
-const UserNotFound = (slug) => `User "${slug}" was not found`
+const UserNotFound = (id) => `User "${id}" was not found`
 
 // Create
 export function createNew(data) {
@@ -37,27 +38,28 @@ export function findAll() {
   return new Promise((resolve, reject) => {
     User.find({}, (err, users) => {
       if (err) return reject(new BadRequest(err))
-      if (!users) return reject(new NotFound('No Users found', slug))
+      if (!users) return reject(new NotFound('No Users found', id))
       return resolve(users)
     })
   })
 }
 
-export function findBySlug(slug) {
+export function findById(id) {
   return new Promise((resolve, reject) => {
-    User.findOne({ slug: slug }, (err, user) => {
+    if (!isValidObjectId(id)) return reject(new NotFound(UserNotFound(id)))
+    User.findOne({ _id: id }, (err, user) => {
       if (err) return reject(new BadRequest(err))
-      if (!user) return reject(new NotFound(UserNotFound(slug), slug))
+      if (!user) return reject(new NotFound(UserNotFound(id), id))
       return resolve(user)
     })
   })
 }
 
 // Update
-export function updateBySlug(slug, data) {
+export function updateById(id, data) {
   return new Promise((resolve, reject) => {
     User.findOneAndUpdate(
-      { slug: slug },
+      { _id: id },
       data,
       { new: true, useFindAndModify: false },
       (err, updated) => {
@@ -70,12 +72,12 @@ export function updateBySlug(slug, data) {
 }
 
 // Delete
-export function deleteBySlug(slug) {
+export function deleteById(id) {
   return new Promise((resolve, reject) => {
-    User.findOneAndDelete({ slug: slug }, (err, deleted) => {
+    User.findOneAndDelete({ _id: id }, (err, deleted) => {
       if (err) return reject(new BadRequest(err))
       if (!deleted) return reject(new NotFound(UserNotFound))
-      return resolve(`User "${slug}" was deleted.`)
+      return resolve(`User "${id}" was deleted.`)
     })
   })
 }
