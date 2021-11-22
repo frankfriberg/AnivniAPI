@@ -10,7 +10,7 @@ export function login(email, password) {
 
     if (user && bcrypt.compareSync(password, user.password)) {
       const accessToken = jwt.sign(
-        { id: user._id, email },
+        { id: user._id, email: user.email, role: user.role },
         process.env.JWT_SECRET,
         {
           expiresIn: config.secretExpiration,
