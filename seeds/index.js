@@ -6,12 +6,15 @@ import AdminSeed from './admin.seed'
 import EventSeed from './event.seed'
 import GuestSeed from './guest.seed'
 
-export default async function seedDatabase() {
+async function clearDatabase() {
   await User.deleteMany({})
   await Guest.deleteMany({})
   await Event.deleteMany({})
-  await createNew(AdminSeed)
+  return
+}
 
+async function seedDatabase() {
+  const newAdmin = await createNew(AdminSeed)
   const newUser = await createNew(UserSeed)
   const newEvent = await Event.create(EventSeed(newUser._id))
   const newGuests = await Guest.create(GuestSeed(newEvent._id))
@@ -21,4 +24,14 @@ export default async function seedDatabase() {
 
   await newUser.save()
   await newEvent.save()
+  return { newUser, newAdmin, newEvent, newGuests }
 }
+
+async function resetDatabase() {
+  await clearDatabase()
+  const seeds = await seedDatabase()
+
+  return { seeds }
+}
+
+export { seedDatabase, clearDatabase, resetDatabase }
