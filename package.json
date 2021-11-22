@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js"
+    "start": "nodemon --exec babel-node index.js",
+    "testtest": "babel-node test.js",
+    "test": "NODE_ENV=test jest --detectOpenHandles",
+    "test:watch": "NODE_ENV=test jest --watch"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +27,10 @@
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/node": "^7.13.10",
-    "@babel/preset-env": "^7.13.10"
+    "@babel/preset-env": "^7.13.10",
+    "babel-jest": "^27.3.1",
+    "chai": "^4.3.4",
+    "jest": "^27.3.1",
+    "supertest": "^6.1.6"
   }
 }
