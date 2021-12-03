@@ -1,16 +1,17 @@
-import express from 'express'
+import express, { Application } from 'express'
 import cors from 'cors'
-import dotenv from 'dotenv'
+import * as dotenv from 'dotenv'
 import morgan from 'morgan'
 
-import ErrorHandler from './middleware/errors'
+import ErrorHandler from './middleware/error.middleware'
 import connect from './config/database'
 
 import routes from './routes'
 
 dotenv.config()
-const app = express()
+const app: Application = express()
 const port = process.env.PORT || 3000
+
 app.use(morgan('dev'))
 app.use(cors())
 app.use(express.urlencoded({ extended: true }))
@@ -23,9 +24,7 @@ app.use(ErrorHandler)
 connect()
 
 if (process.env.NODE_ENV === 'development') {
-  app.listen(port, () => {
+  app.listen(port, (): void => {
     console.log(`Server is running on http://localhost:${port}`)
   })
 }
-
-export default app

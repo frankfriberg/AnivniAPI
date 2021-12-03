@@ -1,36 +1,13 @@
-// import { request, expect } from './config'
-
-// import { clearDatabase, seedDatabase } from '../seeds'
-// import mongoose from 'mongoose'
-// import { assertUserWhitespacable } from '@babel/types'
-
-// let user, admin
-
-// const userApi = '/api/v3/user'
-// const userApiId = (user) => `${userApi}/${user._id}`
-// const userAuth = (user) => `Bearer ${user.token}`
-
-// beforeAll(async () => {
-//   await clearDatabase()
-//   let seeded = await seedDatabase()
-//   user = seeded.newUser
-//   admin = seeded.newAdmin
-//   return user
-// })
-
-// afterAll(() => {
-//   mongoose.connection.close()
-// })
-
 import supertest from 'supertest'
 import { expect } from 'chai'
+import { User } from '../models'
 
 const api = 'http://localhost:3000/api/v3'
 const auth = '/auth/login'
 const userPath = '/user'
 const request = supertest(api)
 
-let user, admin, newUser
+let user: User, admin: User, newUser: User
 
 beforeAll((done) => {
   request

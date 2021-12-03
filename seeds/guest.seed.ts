@@ -1,4 +1,6 @@
-export default function seedGuests(id) {
+import { ObjectId } from 'mongoose'
+
+export default function seedGuests(id: ObjectId) {
   const names = [
     'Colin Knowles',
     'Carolina Chadwick',

@@ -14,19 +14,21 @@ const UserRouter = Router()
 // Create
 UserRouter.post('/', (req, res, next) => {
   createNew(req.body)
-    .then((created) => res.status(201).json(created))
-    .catch((err) => next(err))
+    .then((createdUser) => res.status(201).json(createdUser))
+    .catch((error) => next(error))
 })
 
 // Read
-UserRouter.get('/', [auth, isAdmin], (req, res, next) => {
-  findAll().then((users) => res.status(200).json(users))
+UserRouter.get('/', auth, isAdmin, (req, res, next) => {
+  findAll()
+    .then((users) => res.status(200).json(users))
+    .catch((error) => next(error))
 })
 
 UserRouter.get('/:id', auth, (req, res, next) => {
   findById(req.params.id)
     .then((user) => res.status(200).json(user))
-    .catch((err) => next(err))
+    .catch((error) => next(error))
 })
 
 // Update

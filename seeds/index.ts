@@ -1,4 +1,11 @@
-import { User, Guest, Event } from '../models'
+import {
+  UserModel,
+  GuestModel,
+  EventModel,
+  Guest,
+  Event,
+  User,
+} from '../models'
 import { createNew } from '../controllers/user.controller'
 
 import UserSeed from './user.seed'
@@ -7,20 +14,22 @@ import EventSeed from './event.seed'
 import GuestSeed from './guest.seed'
 
 async function clearDatabase() {
-  await User.deleteMany({})
-  await Guest.deleteMany({})
-  await Event.deleteMany({})
+  await UserModel.deleteMany({})
+  await GuestModel.deleteMany({})
+  await EventModel.deleteMany({})
   return
 }
 
 async function seedDatabase() {
+  // Check controller for "createNew"
   const newAdmin = await createNew(AdminSeed)
   const newUser = await createNew(UserSeed)
-  const newEvent = await Event.create(EventSeed(newUser._id))
-  const newGuests = await Guest.create(GuestSeed(newEvent._id))
+  const newEvent = await EventModel.create(EventSeed(newUser._id))
+  const newGuests = await GuestModel.create(GuestSeed(newEvent._id))
 
-  newUser.event = [newEvent._id]
-  newEvent.guests = newGuests.map((guest) => guest._id)
+  console.log(newGuests)
+  newUser.event = newEvent
+  // newEvent.guests = newGuests
 
   await newUser.save()
   await newEvent.save()

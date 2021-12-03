@@ -19,14 +19,14 @@ GuestRouter.post('/', (req, res, next) => {
 })
 
 // Read
-GuestRouter.get('/', [auth, isAdmin], (req, res, next) => {
+GuestRouter.get('/', auth, isAdmin, (req, res, next) => {
   listAll()
     .then((guests) => res.status(200).json(guests))
     .catch((err) => next(err))
 })
 
 GuestRouter.get('/:slug', auth, (req, res, next) => {
-  listAllBySlug(req.params.slug, req.user.id)
+  listAllBySlug(req.params.slug, req.user)
     .then((guests) => res.status(200).json(guests))
     .catch((err) => next(err))
 })
