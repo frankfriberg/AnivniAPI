@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import { expect } from 'chai'
 import { User } from '../models'
 
-const api = 'http://localhost:3000/api/v3'
+const api = 'http://localhost:8000/api/v3'
 const auth = '/auth/login'
 const userPath = '/user'
 const request = supertest(api)

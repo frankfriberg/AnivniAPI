@@ -4,6 +4,7 @@ import { isValidObjectId, ObjectId } from 'mongoose'
 
 import { User, UserModel } from '../models'
 import HttpException from '../helpers/error'
+import { generateToken } from './auth.controller'
 
 const UserNotFound = (id: string) =>
   new HttpException(404, `User "${id}" was not found`)
@@ -22,17 +23,15 @@ export async function createNew(data: UserInputData): Promise<User> {
 
   return UserModel.create(data)
     .then((user) => {
-      user.token = jwt.sign(
-        {
-          id: user._id,
-          email: data.email,
-        },
-        process.env.JWT_SECRET!,
-        {
-          expiresIn: '1h',
-        }
-      )
-      user.save()
+      generateToken(user)
+        .then((token) => {
+          user.token = token
+          user.save()
+        })
+        .catch((error) => {
+          throw new HttpException(400, error)
+        })
+
       return user
     })
     .catch((error) => {

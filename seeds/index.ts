@@ -1,11 +1,4 @@
-import {
-  UserModel,
-  GuestModel,
-  EventModel,
-  Guest,
-  Event,
-  User,
-} from '../models'
+import { UserModel, GuestModel, EventModel, Guest } from '../models'
 import { createNew } from '../controllers/user.controller'
 
 import UserSeed from './user.seed'
@@ -21,15 +14,13 @@ async function clearDatabase() {
 }
 
 async function seedDatabase() {
-  // Check controller for "createNew"
   const newAdmin = await createNew(AdminSeed)
   const newUser = await createNew(UserSeed)
   const newEvent = await EventModel.create(EventSeed(newUser._id))
   const newGuests = await GuestModel.create(GuestSeed(newEvent._id))
 
-  console.log(newGuests)
   newUser.event = newEvent
-  // newEvent.guests = newGuests
+  newEvent.guests = newGuests
 
   await newUser.save()
   await newEvent.save()

@@ -25,7 +25,7 @@ interface Event {
   name: string
   date: Date
   questions?: Array<Questions>
-  guests?: Guest
+  guests?: Array<Guest>
 }
 
 const EventSchema = new Schema<Event>({
