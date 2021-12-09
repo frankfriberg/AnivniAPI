@@ -49,15 +49,17 @@ describe('User', () => {
       request.get(`${userPath}/${newUser._id}`).expect(403, done())
     })
     test('should return the user with auth', (done) => {
-      request
-        .get(`${userPath}/${newUser._id}`)
-        .auth(newUser.token, { type: 'bearer' })
-        .expect(200)
-        .expect((res) => {
-          expect(res.body).property('_id')
-          done()
-        })
-        .catch((err) => done(err))
+      if (newUser.token) {
+        request
+          .get(`${userPath}/${newUser._id}`)
+          .auth(newUser.token, { type: 'bearer' })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body).property('_id')
+            done()
+          })
+          .catch((err) => done(err))
+      }
     })
   })
 
@@ -66,10 +68,12 @@ describe('User', () => {
       request.delete(`${userPath}/${newUser._id}`).expect(403, done)
     })
     test('should return confirmation with auth', (done) => {
-      request
-        .delete(`${userPath}/${newUser._id}`)
-        .auth(newUser.token, { type: 'bearer' })
-        .expect(200, done)
+      if (newUser.token) {
+        request
+          .delete(`${userPath}/${newUser._id}`)
+          .auth(newUser.token, { type: 'bearer' })
+          .expect(200, done)
+      }
     })
   })
 })
@@ -92,15 +96,17 @@ describe('Admin', () => {
       request.get('/').expect(403, done())
     })
     test('should return users with admin', (done) => {
-      request
-        .get(userPath)
-        .auth(admin.token, { type: 'bearer' })
-        .expect(200)
-        .expect((res) => {
-          expect(res.body).to.be.an('array')
-          done()
-        })
-        .catch((err) => done(err))
+      if (admin.token) {
+        request
+          .get(userPath)
+          .auth(admin.token, { type: 'bearer' })
+          .expect(200)
+          .expect((res) => {
+            expect(res.body).to.be.an('array')
+            done()
+          })
+          .catch((err) => done(err))
+      }
     })
   })
 })

@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import config from '../config/jwt'
 import { User, UserModel } from '../models'
 import HttpException from '../helpers/error'
+import { UserToken } from '../middleware/auth'
 
 export async function generateToken(
   user: User,
@@ -48,6 +49,21 @@ export async function login(email: string, password: string): Promise<User> {
   }
 
   throw new HttpException(403, 'Email or password is incorrect')
+}
+
+export async function logout(userToken: UserToken): Promise<User> {
+  const user = await UserModel.findOne({ _id: userToken.id })
+
+  if (user) {
+    user.token = undefined
+    user.refresh = undefined
+
+    user.save()
+
+    return user
+  } else {
+    throw new HttpException(404, 'User not found')
+  }
 }
 
 export async function refresh(refreshToken: string): Promise<User> {
