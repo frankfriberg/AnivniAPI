@@ -1,11 +1,19 @@
 import { Schema, model, ObjectId } from 'mongoose'
 
+interface Allergies {
+  lactose: boolean
+  gluten: boolean
+  fish: boolean
+  nuts: boolean
+  other: Array<string>
+}
+
 interface Guest {
   event: ObjectId
   name: string
   attending: boolean
-  allergies?: Array<string>
-  other?: Array<string>
+  allergies?: Allergies
+  questions?: Object
 }
 
 const GuestSchema = new Schema<Guest>({
@@ -19,8 +27,16 @@ const GuestSchema = new Schema<Guest>({
     required: true,
   },
   attending: Boolean,
-  allergies: [String],
-  other: [String],
+  allergies: {
+    lactose: Boolean,
+    gluten: Boolean,
+    fish: Boolean,
+    nuts: Boolean,
+    other: [String],
+  },
+  questions: {
+    type: Object,
+  },
 })
 
 const GuestModel = model<Guest>('Guest', GuestSchema)

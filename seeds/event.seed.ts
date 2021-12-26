@@ -16,6 +16,13 @@ export default function seedEvent(userId: ObjectId) {
           en: 'Need a place to stay?',
         },
       },
+      {
+        type: QuestionTypes.Boolean,
+        label: {
+          nb: 'Trenger du sted å fly?',
+          en: 'Need a place to fly?',
+        },
+      },
     ],
   }
 

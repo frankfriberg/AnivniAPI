@@ -66,6 +66,16 @@ export async function logout(userToken: UserToken): Promise<User> {
   }
 }
 
+export async function user(userToken: UserToken): Promise<User> {
+  const user = await UserModel.findOne({ _id: userToken.id })
+
+  if (user) {
+    return user
+  } else {
+    throw new HttpException(404, 'User not found')
+  }
+}
+
 export async function refresh(refreshToken: string): Promise<User> {
   if (jwt.verify(refreshToken, process.env.JWT_REFRESH!)) {
     const user = await UserModel.findOne({ refresh: refreshToken })
