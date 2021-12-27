@@ -40,10 +40,12 @@ const UserSchema = new Schema<User>({
   refresh: {
     type: String,
   },
-  event: {
-    type: Schema.Types.ObjectId,
-    ref: 'Event',
-  },
+  event: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Event',
+    },
+  ],
 })
 
 const UserModel = model<User>('User', UserSchema)
