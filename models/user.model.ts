@@ -13,7 +13,7 @@ interface User extends Document {
   role: RoleTypes
   token?: string
   refresh?: string
-  event?: Event
+  event?: Array<Event>
 }
 
 // TODO: [AN-16] Add duplicate validation for slug and email + other fields

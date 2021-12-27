@@ -19,7 +19,7 @@ async function seedDatabase() {
   const newEvent = await EventModel.create(EventSeed(newUser._id))
   const newGuests = await GuestModel.create(GuestSeed(newEvent._id))
 
-  newUser.event = newEvent
+  newUser.event?.push(newEvent)
   newEvent.guests = newGuests
 
   await newUser.save()
