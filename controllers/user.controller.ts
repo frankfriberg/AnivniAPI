@@ -3,7 +3,7 @@ import HttpException from '../helpers/error'
 
 import { UserModel } from '../models'
 import { User } from '../types/user.types'
-import { generateToken } from './auth.controller'
+import generateToken from '../helpers/token'
 
 const UserNotFound = (id: string) =>
   new HttpException(404, `User "${id}" was not found`)

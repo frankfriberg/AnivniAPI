@@ -1,45 +1,17 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import config from '../config/jwt'
 import HttpException from '../helpers/error'
+import generateToken from '../helpers/token'
 
 import { UserModel } from '../models'
 import { User, UserToken } from '../types/user.types'
-
-export async function generateToken(
-  user: User,
-  type: string = 'token'
-): Promise<string> {
-  const duration = (): number => {
-    if ((type = 'token')) {
-      return config.secretExpiration
-    } else {
-      return config.refreshExpiration
-    }
-  }
-
-  return jwt.sign(
-    { id: user._id, email: user.email, role: user.role },
-    process.env.JWT_SECRET!,
-    {
-      expiresIn: duration(),
-    }
-  )
-}
-
-export async function generateRefresh(
-  user: User,
-  type: string = 'refresh'
-): Promise<string> {
-  return generateToken(user, type)
-}
 
 export async function login(email: string, password: string): Promise<User> {
   const user = await UserModel.findOne({ email: email }).select('+password')
 
   if (user && bcrypt.compareSync(password, user.password)) {
-    const accessToken = await generateRefresh(user)
-    const refreshToken = await generateRefresh(user)
+    const accessToken = await generateToken(user)
+    const refreshToken = await generateToken(user, 'refresh')
 
     user.token = accessToken
     user.refresh = refreshToken
