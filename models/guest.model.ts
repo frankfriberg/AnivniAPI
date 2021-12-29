@@ -1,20 +1,5 @@
-import { Schema, model, ObjectId } from 'mongoose'
-
-interface Allergies {
-  lactose: boolean
-  gluten: boolean
-  fish: boolean
-  nuts: boolean
-  other: Array<string>
-}
-
-interface Guest {
-  event: ObjectId
-  name: string
-  attending: boolean
-  allergies?: Allergies
-  questions?: Object
-}
+import { Schema, model } from 'mongoose'
+import { Guest } from '../types/guest.types'
 
 const GuestSchema = new Schema<Guest>({
   event: {
@@ -32,8 +17,8 @@ const GuestSchema = new Schema<Guest>({
     gluten: Boolean,
     fish: Boolean,
     nuts: Boolean,
-    other: [String],
   },
+  otherAllergy: [String],
   questions: {
     type: Object,
   },
@@ -42,4 +27,3 @@ const GuestSchema = new Schema<Guest>({
 const GuestModel = model<Guest>('Guest', GuestSchema)
 
 export default GuestModel
-export { Guest }

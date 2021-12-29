@@ -3,9 +3,9 @@ import { Event } from '../models'
 import { QuestionTypes } from '../models/event.model'
 
 export default function seedEvent(userId: ObjectId) {
-  const event: Event = {
+  const event = {
     user: userId,
-    name: 'Test Event',
+    title: 'Test Event',
     slug: 'testevent',
     date: new Date('2018-01-01'),
     questions: [

@@ -1,32 +1,5 @@
-import { Schema, model, ObjectId, PopulatedDoc } from 'mongoose'
-import { Guest } from './guest.model'
-
-enum QuestionTypes {
-  Text = 'text',
-  Radio = 'radio',
-  Checkbox = 'checkbox',
-  Number = 'number',
-  Date = 'date',
-  Select = 'select',
-  Boolean = 'boolean',
-}
-
-interface Questions {
-  type: QuestionTypes
-  label: {
-    [language: string]: string
-  }
-  options?: Array<String>
-}
-
-interface Event {
-  user: ObjectId
-  slug: string
-  name: string
-  date: Date
-  questions?: Array<Questions>
-  guests?: Array<Guest>
-}
+import { Schema, model } from 'mongoose'
+import { Event, QuestionTypes } from '../types/event.types'
 
 const EventSchema = new Schema<Event>({
   user: {
@@ -40,9 +13,9 @@ const EventSchema = new Schema<Event>({
     unique: true,
     required: [true, 'slug is required'],
   },
-  name: {
+  title: {
     type: String,
-    required: [true, 'name is required'],
+    required: [true, 'title is required'],
   },
   date: {
     type: Date,
@@ -66,15 +39,9 @@ const EventSchema = new Schema<Event>({
       options: [String],
     },
   ],
-  guests: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Guest',
-    },
-  ],
 })
 
 const EventModel = model<Event>('Event', EventSchema)
 
 export default EventModel
-export { Event, Questions, QuestionTypes }
+export { Event }

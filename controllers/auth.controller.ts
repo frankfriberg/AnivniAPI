@@ -1,9 +1,10 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import config from '../config/jwt'
-import { User, UserModel } from '../models'
 import HttpException from '../helpers/error'
-import { UserToken } from '../middleware/auth'
+
+import { UserModel } from '../models'
+import { User, UserToken } from '../types/user.types'
 
 export async function generateToken(
   user: User,
@@ -34,7 +35,7 @@ export async function generateRefresh(
 }
 
 export async function login(email: string, password: string): Promise<User> {
-  const user = await UserModel.findOne({ email: email })
+  const user = await UserModel.findOne({ email: email }).select('+password')
 
   if (user && bcrypt.compareSync(password, user.password)) {
     const accessToken = await generateRefresh(user)

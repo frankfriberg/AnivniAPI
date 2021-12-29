@@ -1,5 +1,5 @@
-import UserModel, { User } from './user.model'
-import EventModel, { Event } from './event.model'
-import GuestModel, { Guest } from './guest.model'
+import UserModel from './user.model'
+import EventModel from './event.model'
+import GuestModel from './guest.model'
 
-export { UserModel, EventModel, GuestModel, User, Event, Guest }
+export { UserModel, EventModel, GuestModel }

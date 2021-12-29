@@ -1,20 +1,5 @@
-import { Schema, model, Document } from 'mongoose'
-import { Event } from './event.model'
-
-enum RoleTypes {
-  User = 'user',
-  Organizer = 'organizer',
-  Admin = 'admin',
-}
-
-interface User extends Document {
-  email: string
-  password: string
-  role: RoleTypes
-  token?: string
-  refresh?: string
-  event?: Array<Event>
-}
+import { Schema, model } from 'mongoose'
+import { User, RoleTypes } from '../types/user.types'
 
 // TODO: [AN-16] Add duplicate validation for slug and email + other fields
 const UserSchema = new Schema<User>({
@@ -27,6 +12,7 @@ const UserSchema = new Schema<User>({
   },
   password: {
     type: String,
+    select: false,
     required: [true, 'password is required'],
   },
   role: {
@@ -40,7 +26,7 @@ const UserSchema = new Schema<User>({
   refresh: {
     type: String,
   },
-  event: [
+  events: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Event',
@@ -51,4 +37,3 @@ const UserSchema = new Schema<User>({
 const UserModel = model<User>('User', UserSchema)
 
 export default UserModel
-export { User }
