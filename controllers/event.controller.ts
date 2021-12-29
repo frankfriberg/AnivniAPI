@@ -1,5 +1,6 @@
-import { Event, EventModel } from '../models'
 import HttpException from '../helpers/error'
+import { EventModel } from '../models'
+import { Event } from '../types/event.types'
 
 // Read
 export async function getEvent(slug: string): Promise<Event> {
