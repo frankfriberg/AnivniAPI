@@ -3,7 +3,7 @@ import { auth, isAdmin } from '../middleware/auth'
 
 import {
   addNew,
-  listAllBySlug,
+  listAllById,
   listAll,
   updateById,
   deleteById,
@@ -25,8 +25,8 @@ GuestRouter.get('/', auth, isAdmin, (req, res, next) => {
     .catch((err) => next(err))
 })
 
-GuestRouter.get('/:slug', auth, (req, res, next) => {
-  listAllBySlug(req.params.slug, req.user)
+GuestRouter.get('/:id', auth, (req, res, next) => {
+  listAllById(req.params.id, req.user)
     .then((guests) => res.status(200).json(guests))
     .catch((err) => next(err))
 })

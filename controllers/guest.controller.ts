@@ -1,6 +1,8 @@
-import { Guest, Event, GuestModel, EventModel } from '../models'
 import HttpException from '../helpers/error'
-import { UserToken } from '../middleware/auth'
+
+import { GuestModel, EventModel } from '../models'
+import { Guest } from '../types/guest.types'
+import { UserToken } from '../types/user.types'
 
 // Create
 export async function addNew(data: any): Promise<Guest> {
@@ -21,19 +23,22 @@ export async function listAll(): Promise<Guest[]> {
     })
 }
 
-export async function listAllBySlug(
-  slug: string,
+export async function listAllById(
+  id: string,
   user: UserToken
 ): Promise<Guest[]> {
-  return EventModel.findOne({ slug: slug })
+  return EventModel.findById(id)
     .exec()
     .then((event) => {
-      if (!event) throw new HttpException(404, `Event ${slug} not found.`)
-      if (user.id !== event.user)
+      if (!event) throw new HttpException(404, `Event not found.`)
+
+      if (event.user.toString() !== user.id) {
         throw new HttpException(
           403,
           'You are not authorized to view this event.'
         )
+      }
+
       return GuestModel.find({ event: event._id })
         .exec()
         .then((guests) => guests)

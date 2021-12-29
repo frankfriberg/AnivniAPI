@@ -1,9 +1,8 @@
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import { isValidObjectId, ObjectId } from 'mongoose'
-
-import { User, UserModel } from '../models'
 import HttpException from '../helpers/error'
+
+import { UserModel } from '../models'
+import { User } from '../types/user.types'
 import { generateToken } from './auth.controller'
 
 const UserNotFound = (id: string) =>
@@ -52,18 +51,32 @@ export async function findAll(): Promise<User[]> {
     })
 }
 
-export async function findById(id: string): Promise<User> {
-  if (!isValidObjectId(id)) throw UserNotFound(id)
-
-  return UserModel.findOne({ _id: id })
-    .exec()
-    .then((userSearch) => {
-      if (!userSearch) throw UserNotFound(id)
-      else return userSearch
-    })
-    .catch((error) => {
-      throw new HttpException(500, error)
-    })
+export async function findById(
+  id: string,
+  events: boolean = false
+): Promise<User> {
+  if (events) {
+    return UserModel.findById(id)
+      .populate('events')
+      .exec()
+      .then((user) => {
+        if (!user) throw UserNotFound(id)
+        return user
+      })
+      .catch((error) => {
+        throw new HttpException(500, error)
+      })
+  } else {
+    return UserModel.findById(id)
+      .exec()
+      .then((userSearch) => {
+        if (!userSearch) throw UserNotFound(id)
+        return userSearch
+      })
+      .catch((error) => {
+        throw new HttpException(500, error)
+      })
+  }
 }
 
 // Update
@@ -71,7 +84,7 @@ export async function updateById(
   id: string,
   data: UserInputData
 ): Promise<User> {
-  return UserModel.findOneAndUpdate({ _id: id }, data, {
+  return UserModel.findByIdAndUpdate(id, data, {
     new: true,
     useFindAndModify: false,
   })

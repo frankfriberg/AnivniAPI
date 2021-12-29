@@ -21,6 +21,13 @@ export default function seedGuests(id: ObjectId) {
       event: id,
       name: guest,
       attending: Math.random() < 0.7,
+      allergies: {
+        lactose: Math.random() < 0.5,
+        gluten: Math.random() < 0.5,
+        fish: Math.random() < 0.5,
+        nuts: Math.random() < 0.5,
+        other: ['Soy'],
+      },
     })
   }
 

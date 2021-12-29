@@ -1,4 +1,4 @@
-import { UserModel, GuestModel, EventModel, Guest } from '../models'
+import { UserModel, GuestModel, EventModel } from '../models'
 import { createNew } from '../controllers/user.controller'
 
 import UserSeed from './user.seed'
@@ -19,8 +19,7 @@ async function seedDatabase() {
   const newEvent = await EventModel.create(EventSeed(newUser._id))
   const newGuests = await GuestModel.create(GuestSeed(newEvent._id))
 
-  newUser.event?.push(newEvent)
-  newEvent.guests = newGuests
+  newUser.events?.push(newEvent)
 
   await newUser.save()
   await newEvent.save()

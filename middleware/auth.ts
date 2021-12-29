@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 import { Request, Response, NextFunction } from 'express'
-import { ObjectId } from 'mongoose'
+import { UserToken } from '../types/user.types'
 
 declare global {
   namespace Express {
@@ -9,12 +9,6 @@ declare global {
       user: UserToken
     }
   }
-}
-
-interface UserToken {
-  id: ObjectId
-  email: string
-  role: string
 }
 
 const { TokenExpiredError } = jwt
