@@ -44,4 +44,3 @@ const EventSchema = new Schema<Event>({
 const EventModel = model<Event>('Event', EventSchema)
 
 export default EventModel
-export { Event }

@@ -1,6 +1,6 @@
 import { Document, ObjectId } from 'mongoose'
 
-export interface Allergies extends Object {
+export interface Allergy {
   lactose: boolean
   gluten: boolean
   fish: boolean
@@ -11,7 +11,7 @@ export interface Guest extends Document {
   event: ObjectId
   name: string
   attending: boolean
-  allergies?: Allergies
-  otherAllergy?: Array<string>
-  questions?: Object
+  allergies: Allergies
+  otherAllergy: Array<string>
+  answers: Object
 }

@@ -28,6 +28,7 @@ export default function seedGuests(id: ObjectId) {
         nuts: Math.random() < 0.5,
         other: ['Soy'],
       },
+      answers: {},
     })
   }
 

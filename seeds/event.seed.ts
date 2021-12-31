@@ -1,6 +1,5 @@
 import { ObjectId } from 'mongoose'
-import { Event } from '../models'
-import { QuestionTypes } from '../models/event.model'
+import { QuestionTypes } from '../types/event.types'
 
 export default function seedEvent(userId: ObjectId) {
   const event = {
