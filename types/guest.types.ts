@@ -1,6 +1,6 @@
 import { Document, ObjectId } from 'mongoose'
 
-export interface Allergy {
+export interface Allergies extends Object {
   lactose: boolean
   gluten: boolean
   fish: boolean

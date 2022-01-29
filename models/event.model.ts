@@ -21,6 +21,10 @@ const EventSchema = new Schema<Event>({
     type: Date,
     required: [true, 'date is required'],
   },
+  adress: {
+    type: String,
+    requried: [true, 'adress is required'],
+  },
   questions: [
     {
       type: {
@@ -36,7 +40,7 @@ const EventSchema = new Schema<Event>({
         of: String,
         required: [true, 'label is required'],
       },
-      options: [String],
+      options: [{ type: Map, of: String }],
     },
   ],
 })

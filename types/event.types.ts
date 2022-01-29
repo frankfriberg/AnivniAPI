@@ -11,17 +11,18 @@ export enum QuestionTypes {
 }
 
 export interface Questions {
-  type: QuestionTypes
+  type: string
   label: {
     [language: string]: string
   }
-  options?: Array<String>
+  options?: [{ [language: string]: string }]
 }
 
 export interface Event extends Document {
   user: ObjectId
   slug: string
   title: string
+  adress: string
   date: Date
   questions?: Array<Questions>
 }
