@@ -1,4 +1,11 @@
 import { Document, ObjectId } from 'mongoose'
+import {
+  TemplateBaseOptions,
+  TemplateInviteOptions,
+  TemplateInfoOptions,
+  TemplateResponseOptions,
+  TemplateFinishOptions,
+} from '../types/template.type'
 
 export enum QuestionTypes {
   Text = 'text',
@@ -18,6 +25,14 @@ export interface Questions {
   options?: [{ [language: string]: string }]
 }
 
+interface CustomTemplate {
+  baseOptions: TemplateBaseOptions
+  inviteOptions: TemplateInviteOptions
+  infoOptions: TemplateInfoOptions
+  responseOptions: TemplateResponseOptions
+  finishOptions: TemplateFinishOptions
+}
+
 export interface Event extends Document {
   user: ObjectId
   slug: string
@@ -25,4 +40,6 @@ export interface Event extends Document {
   adress: string
   date: Date
   questions?: Array<Questions>
+  template: ObjectId
+  customTemplate?: CustomTemplate
 }

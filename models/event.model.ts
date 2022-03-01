@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { Event, QuestionTypes } from '../types/event.types'
+import { TemplateOptions } from './template.model'
 
 const EventSchema = new Schema<Event>({
   user: {
@@ -43,6 +44,14 @@ const EventSchema = new Schema<Event>({
       options: [{ type: Map, of: String }],
     },
   ],
+  template: {
+    type: Schema.Types.ObjectId,
+    ref: 'Template',
+    required: true,
+  },
+  customTemplate: {
+    ...TemplateOptions,
+  },
 })
 
 const EventModel = model<Event>('Event', EventSchema)
